@@ -1,6 +1,6 @@
 main: net.initialposition.minecraftlives.MinecraftLives
 name: MinecraftLives
-version: 1.0.0
+version: 1.0.1
 description: Implements a live system into Minecraft. Running out of lives bans the player for a specified time.
 api-version: 1.16
 author: InitialPosition

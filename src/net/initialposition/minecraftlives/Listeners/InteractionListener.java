@@ -65,11 +65,17 @@ public class InteractionListener implements Listener {
 
     @EventHandler
     public void consumeExtraLifeSoup(PlayerItemConsumeEvent event) {
-        // cancel event to handle here
-        event.setCancelled(true);
-
         // get the player instance
         Player player = event.getPlayer();
+
+        // if the event was triggered by anything but stew, we handle it like normal food because it is
+        if (!(player.getInventory().getItemInMainHand().getType() == ItemManager.STEW_OF_LIFE.getType() &&
+                !player.getInventory().getItemInMainHand().getEnchantments().isEmpty())) {
+            return;
+        }
+
+        // cancel event to handle here
+        event.setCancelled(true);
 
         // give player extra life
         LifeListEntry playerData = null;
