@@ -2,6 +2,7 @@ package net.initialposition.minecraftlives;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import net.initialposition.minecraftlives.Commands.HealthCommand;
 import net.initialposition.minecraftlives.Listeners.InteractionListener;
 import net.initialposition.minecraftlives.util.ConfigKeys;
 import net.initialposition.minecraftlives.util.ConfigWriter;
@@ -23,7 +24,7 @@ public class MinecraftLives extends JavaPlugin {
     public void onEnable() {
 
         // generate logger
-        logger = new ConsoleLog(ConsoleLog.LogLevel.INFO);
+        logger = new ConsoleLog(ConsoleLog.LogLevel.DEBG);
         logger.log("Starting MinecraftLives...", ConsoleLog.LogLevel.INFO);
 
         // initialize loaded life list
@@ -50,6 +51,10 @@ public class MinecraftLives extends JavaPlugin {
         InteractionListener listener = interactionListener;
         getServer().getPluginManager().registerEvents(listener, this);
         logger.log("Listener registered.", ConsoleLog.LogLevel.VERB);
+
+        // register health command
+        HealthCommand healthCommand = new HealthCommand(interactionListener);
+        this.getCommand("health").setExecutor(healthCommand);
     }
 
     @Override

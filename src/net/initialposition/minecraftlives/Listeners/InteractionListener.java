@@ -5,6 +5,7 @@ import net.initialposition.minecraftlives.util.ConfigKeys;
 import net.initialposition.minecraftlives.util.ConsoleLog;
 import net.initialposition.minecraftlives.util.LifeListEntry;
 import org.bukkit.BanList;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Player;
@@ -20,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.UUID;
 
 public class InteractionListener implements Listener {
 
@@ -27,6 +29,17 @@ public class InteractionListener implements Listener {
     private final JavaPlugin plugin;
 
     private ArrayList<LifeListEntry> lifeList = new ArrayList<>();
+
+    public int getHealthForPlayer(UUID id) {
+
+        for (LifeListEntry entry : this.lifeList) {
+            if (entry.getUUID().equals(id)) {
+                return entry.getLives();
+            }
+        }
+
+        return -1;
+    }
 
     public InteractionListener(JavaPlugin plugin, ConsoleLog logger, @Nullable ArrayList<LifeListEntry> list) {
         this.plugin = plugin;
@@ -129,9 +142,19 @@ public class InteractionListener implements Listener {
 
                     // kick the player to enforce ban
                     player.kickPlayer(ChatColor.RED + banReason);
-                }
 
-                player.sendMessage(ChatColor.RED + "YOU DIED! ♥x" + entry.getLives());
+                    // broadcast explanation to server
+                    int banTimeInMinutes = this.plugin.getConfig().getInt(ConfigKeys.CONF_ON_DEATH_BAN_TIME.name());
+                    int banTimeInHours = 0;
+                    while (banTimeInMinutes > 60) {
+                        banTimeInHours++;
+                        banTimeInMinutes -= 60;
+                    }
+                    String banTimeStr = banTimeInHours > 0 ? banTimeInHours + "h " + banTimeInMinutes + "m" : banTimeInMinutes + "m";
+                    Bukkit.getServer().broadcastMessage(ChatColor.RED + player.getDisplayName() + " DIED! ♥x0, Respawn Time: " + banTimeStr);
+                } else {
+                    Bukkit.getServer().broadcastMessage(ChatColor.RED + player.getDisplayName() + " DIED! ♥x" + entry.getLives());
+                }
             }
         }
     }
@@ -148,7 +171,7 @@ public class InteractionListener implements Listener {
             if (entry.getUUID().equals(player.getUniqueId())) {
                 // he does, show player lives
                 logger.log("Player has life data, no further action needed", ConsoleLog.LogLevel.DEBG);
-                player.sendMessage(ChatColor.RED + "♥x" + entry.getLives());
+                player.sendMessage(ChatColor.RED + "WELCOME BACK! ♥x" + entry.getLives());
                 return;
             }
         }
@@ -161,7 +184,7 @@ public class InteractionListener implements Listener {
         LifeListEntry newEntry = new LifeListEntry(player.getUniqueId(), DEFAULT_LIVES);
         this.lifeList.add(newEntry);
 
-        player.sendMessage(ChatColor.RED + "♥x" + DEFAULT_LIVES);
+        player.sendMessage(ChatColor.RED + "WELCOME BACK! ♥x" + DEFAULT_LIVES);
     }
 
     public ArrayList<LifeListEntry> getLifeList() {
