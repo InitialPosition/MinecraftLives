@@ -121,6 +121,8 @@ public class InteractionListener implements Listener {
 
         logger.log(player.getDisplayName() + " died", ConsoleLog.LogLevel.DEBG);
 
+        String deathMessage = event.getDeathMessage();
+
         // remove a life
         LifeListEntry playerData = null;
         for (LifeListEntry entry : this.lifeList) {
@@ -151,9 +153,10 @@ public class InteractionListener implements Listener {
                         banTimeInMinutes -= 60;
                     }
                     String banTimeStr = banTimeInHours > 0 ? banTimeInHours + "h " + banTimeInMinutes + "m" : banTimeInMinutes + "m";
-                    Bukkit.getServer().broadcastMessage(ChatColor.RED + player.getDisplayName() + " DIED! ♥x0, Respawn Time: " + banTimeStr);
+                    Bukkit.getServer().broadcastMessage(ChatColor.RED + deathMessage + "! ♥x0, Respawn Time: " + banTimeStr);
                 } else {
-                    Bukkit.getServer().broadcastMessage(ChatColor.RED + player.getDisplayName() + " DIED! ♥x" + entry.getLives());
+
+                    Bukkit.getServer().broadcastMessage(ChatColor.RED + deathMessage + "! ♥x" + entry.getLives());
                 }
             }
         }
