@@ -31,7 +31,7 @@ public class ItemManager {
         ShapedRecipe recipeDiamondBowl = new ShapedRecipe(namespacedKeyBowl, ItemManager.DIAMOND_BOWL);
         ShapedRecipe recipeStewOfLife = new ShapedRecipe(namespacedStew, ItemManager.STEW_OF_LIFE);
 
-        recipeDiamondBowl.shape("   ", "D D", " D ");
+        recipeDiamondBowl.shape("D D", " D ");
         recipeDiamondBowl.setIngredient('D', Material.DIAMOND);
 
         recipeStewOfLife.shape("MM ", "BFD");

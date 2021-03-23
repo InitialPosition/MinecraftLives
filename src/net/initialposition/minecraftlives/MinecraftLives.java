@@ -24,7 +24,7 @@ public class MinecraftLives extends JavaPlugin {
     public void onEnable() {
 
         // generate logger
-        logger = new ConsoleLog(ConsoleLog.LogLevel.DEBG);
+        logger = new ConsoleLog(ConsoleLog.LogLevel.INFO);
         logger.log("Starting MinecraftLives...", ConsoleLog.LogLevel.INFO);
 
         // initialize loaded life list

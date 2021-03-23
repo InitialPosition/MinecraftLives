@@ -155,7 +155,6 @@ public class InteractionListener implements Listener {
                     String banTimeStr = banTimeInHours > 0 ? banTimeInHours + "h " + banTimeInMinutes + "m" : banTimeInMinutes + "m";
                     Bukkit.getServer().broadcastMessage(ChatColor.RED + deathMessage + "! ♥x0, Respawn Time: " + banTimeStr);
                 } else {
-
                     Bukkit.getServer().broadcastMessage(ChatColor.RED + deathMessage + "! ♥x" + entry.getLives());
                 }
             }
