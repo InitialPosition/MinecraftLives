@@ -133,6 +133,9 @@ public class InteractionListener implements Listener {
                     // player is out of lives, ban and restock
                     entry.setLives(5);
 
+                    // manually clear inventory. this prevents item duping
+                    player.getInventory().clear();
+
                     // set ban time and reason
                     Calendar banTime = Calendar.getInstance();
                     banTime.add(Calendar.MINUTE, this.plugin.getConfig().getInt(ConfigKeys.CONF_ON_DEATH_BAN_TIME.name()));
@@ -148,7 +151,7 @@ public class InteractionListener implements Listener {
                     // broadcast explanation to server
                     int banTimeInMinutes = this.plugin.getConfig().getInt(ConfigKeys.CONF_ON_DEATH_BAN_TIME.name());
                     int banTimeInHours = 0;
-                    while (banTimeInMinutes > 60) {
+                    while (banTimeInMinutes >= 60) {
                         banTimeInHours++;
                         banTimeInMinutes -= 60;
                     }
